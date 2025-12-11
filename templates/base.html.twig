@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Ресторан{% endblock %}</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f9f9f9; 
+        }
+        nav { 
+            background: #333; 
+            padding: 10px; 
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left a, .nav-right a { 
+            color: white; 
+            margin-right: 20px; 
+            text-decoration: none; 
+        }
+        .nav-left a:hover, .nav-right a:hover { 
+            text-decoration: underline; 
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: white; 
+            min-height: 80vh; 
+        }
+        .user-info {
+            color: white;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+        .new-order-btn {
+            background: #28a745; 
+            color: white; 
+            padding: 5px 10px; 
+            text-decoration: none; 
+            font-weight: bold;
+            border-radius: 3px;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .alert-info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="{{ path('app_home') }}">Главная</a>
+            <a href="{{ path('app_people_index') }}">Клиенты</a>
+            <a href="{{ path('app_dish_index') }}">Меню</a>
+            <a href="{{ path('app_order_index') }}">Заказы</a>
+            {% if app.user %}
+                <a href="{{ path('app_order_new') }}" class="new-order-btn">+ Новый заказ</a>
+            {% endif %}
+        </div>
+        
+        <div class="nav-right">
+            {% if app.user %}
+                <span class="user-info">
+                    <i class="bi bi-person"></i> {{ app.user.name }}
+                </span>
+                <a href="{{ path('app_logout') }}">Выйти</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Войти</a>
+                <a href="{{ path('app_register') }}">Регистрация</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {# Flash сообщения #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        
+        {% block body %}{% endblock %}
+    </div>
+</body>
+</html>
