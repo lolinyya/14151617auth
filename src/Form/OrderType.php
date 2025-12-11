@@ -24,7 +24,6 @@ class OrderType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Сначала добавляем все поля, кроме people
         $builder
             ->add('dishes', EntityType::class, [
                 'class' => Dish::class,
@@ -43,7 +42,6 @@ class OrderType extends AbstractType
                 'label' => 'Документы'
             ]);
 
-        // Поле people добавляем только если пользователь не авторизован
         if (!$this->security->isGranted('ROLE_USER')) {
             $builder->add('people', EntityType::class, [
                 'class' => People::class,
@@ -53,8 +51,6 @@ class OrderType extends AbstractType
                 'label' => 'Клиент'
             ]);
         }
-        // Если пользователь авторизован, поле people не показываем
-        // Значение установим в контроллере
     }
 
     public function configureOptions(OptionsResolver $resolver): void
